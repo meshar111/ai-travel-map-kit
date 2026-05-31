@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Travel Map Kit</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">AI Travel Map Kit</p>
+          <h1>مولد حزم خرائط سفر قابلة للبيع قبل موسم الصيف</h1>
+          <p class="lead">اكتب الوجهة ونوع المسافر، وخذ منتجًا رقميًا جاهزًا: خطة أيام، روابط خرائط، وصف بيع، سعر مقترح، وبرومبتات إنتاج.</p>
+        </div>
+        <div class="revenue-card">
+          <span>هدف تجاري واقعي</span>
+          <strong>$1,000 / أسبوع</strong>
+          <small>100 نسخة × $10 أو 25 نسخة × $40</small>
+        </div>
+      </header>
+
+      <section class="workspace">
+        <aside class="panel builder">
+          <div class="panel-head">
+            <h2>إعداد الحزمة</h2>
+            <button id="sample-btn" class="ghost-btn">مثال جاهز</button>
+          </div>
+
+          <label>الدولة<input id="country" value="إيطاليا" /></label>
+          <label>المدينة أو المنطقة<input id="city" value="روما" /></label>
+          <label>نوع المسافر
+            <select id="traveler">
+              <option>عائلة</option><option>زوجين</option><option>رحالة بميزانية محدودة</option><option>مسافر لوحده</option><option>محب القهوة والمطاعم</option>
+            </select>
+          </label>
+          <label>مدة الرحلة
+            <select id="days"><option value="3">3 أيام</option><option value="5" selected>5 أيام</option><option value="7">7 أيام</option><option value="10">10 أيام</option></select>
+          </label>
+          <label>مستوى الميزانية
+            <select id="budget"><option>اقتصادي</option><option selected>متوسط</option><option>فاخر</option></select>
+          </label>
+          <label>أقل تقييم مطلوب
+            <select id="rating"><option value="4.0">4.0+</option><option value="4.3" selected>4.3+</option><option value="4.5">4.5+</option><option value="4.7">4.7+</option></select>
+          </label>
+          <label>لغة المنتج
+            <select id="language"><option selected>عربي</option><option>إنجليزي</option></select>
+          </label>
+          <label>Google Places API Key<input id="places-api-key" type="password" placeholder="اختياري: ضع مفتاحك هنا لجلب التقييمات داخل الموقع" /></label>
+
+          <button id="generate-btn" class="primary-btn">توليد حزمة السفر</button>
+          <button id="fetch-places-btn" class="primary-btn alt">جلب الأماكن والتقييمات</button>
+          <button id="copy-sales-btn" class="secondary-btn">نسخ وصف البيع</button>
+          <button id="copy-prompts-btn" class="secondary-btn">نسخ البرومبتات</button>
+          <button id="print-btn" class="ghost-btn wide">طباعة / حفظ PDF</button>
+        </aside>
+
+        <section class="panel output">
+          <div class="panel-head"><div><p class="eyebrow">الحزمة الناتجة</p><h2 id="product-title">Rome Family Summer Map Pack</h2></div><span id="price-chip" class="chip">$19</span></div>
+          <div class="map-preview"><iframe id="map-frame" title="خريطة الوجهة" loading="lazy"></iframe></div>
+          <section class="grid">
+            <article class="mini-card"><span>الجمهور</span><strong id="audience">عائلة تسافر لأول مرة</strong></article>
+            <article class="mini-card"><span>المحتوى</span><strong id="deliverables">PDF + روابط خرائط + خطة</strong></article>
+            <article class="mini-card"><span>قناة البيع</span><strong>Etsy / Gumroad / X</strong></article>
+          </section>
+          <section><h3>خطة الرحلة</h3><ol id="itinerary-list" class="itinerary"></ol></section>
+          <section><h3>روابط خرائط جاهزة</h3><div id="map-links" class="links"></div></section>
+          <section><h3>أماكن وفئات يبحث عنها المسافرون</h3><p class="note">الروابط تفتح Google Maps مباشرة، وهناك تظهر التقييمات الحية، عدد المراجعات، أوقات العمل، والصور.</p><p id="api-state" class="api-state"></p><div id="places-grid" class="places-grid"></div></section>
+          <section><h3>وصف البيع الجاهز</h3><textarea id="sales-copy" readonly rows="8"></textarea></section>
+          <section><h3>برومبتات الإنتاج</h3><textarea id="prompts-copy" readonly rows="10"></textarea></section>
+        </section>
+      </section>
+    </main>
+    <script src="./script.js"></script>
+  </body>
+</html>
