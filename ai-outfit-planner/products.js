@@ -38,10 +38,49 @@
     const harrods = links.find((link) => link.textContent.includes("Harrods"))?.href || ounass;
 
     return [
-      { type: "dress", title: "اختيارات فساتين مشابهة", source: "Ounass", link: ounass },
-      { type: "bag", title: "شنط تناسب اللوك", source: "Bloomingdale's", link: bloomingdales },
-      { type: "shoe", title: "أحذية وإكسسوارات", source: "Harrods", link: harrods },
+      { type: "dress", title: "اختيارات فساتين مشابهة", source: "Ounass", link: ounass, image: fallbackImage("dress") },
+      { type: "bag", title: "شنط تناسب اللوك", source: "Bloomingdale's", link: bloomingdales, image: fallbackImage("bag") },
+      { type: "shoe", title: "أحذية وإكسسوارات", source: "Harrods", link: harrods, image: fallbackImage("shoe") },
     ];
+  }
+
+  function fallbackImage(type) {
+    const art = {
+      dress: `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 240">
+          <defs>
+            <linearGradient id="bg" x1="0" x2="1"><stop stop-color="#fff7fb"/><stop offset="1" stop-color="#eef9ff"/></linearGradient>
+            <linearGradient id="dress" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#251321"/><stop offset="1" stop-color="#d9447f"/></linearGradient>
+          </defs>
+          <rect width="360" height="240" rx="22" fill="url(#bg)"/>
+          <circle cx="70" cy="46" r="54" fill="#ffe0ed"/>
+          <path d="M167 52h26l17 43 38 88c3 8-3 17-12 17H124c-9 0-15-9-12-17l38-88 17-43Z" fill="url(#dress)"/>
+          <path d="M160 52c5 17 13 27 20 27s15-10 20-27" fill="#fff7fb" opacity=".95"/>
+          <path d="M151 96h58" stroke="#f5c4d8" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="261" cy="82" r="18" fill="#c9a24b"/>
+          <text x="180" y="224" fill="#735f6b" text-anchor="middle" font-size="18" font-family="Arial">صورة الفستان</text>
+        </svg>`,
+      bag: `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 240">
+          <defs><linearGradient id="bg" x1="0" x2="1"><stop stop-color="#fff8ed"/><stop offset="1" stop-color="#f8fcff"/></linearGradient><linearGradient id="bag" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#fff0c5"/><stop offset="1" stop-color="#d9447f"/></linearGradient></defs>
+          <rect width="360" height="240" rx="22" fill="url(#bg)"/>
+          <rect x="120" y="92" width="120" height="82" rx="20" fill="url(#bag)"/>
+          <path d="M148 96c0-30 64-30 64 0" fill="none" stroke="#7c6040" stroke-width="12" stroke-linecap="round"/>
+          <circle cx="88" cy="60" r="38" fill="#ffd5e6"/>
+          <text x="180" y="218" fill="#735f6b" text-anchor="middle" font-size="18" font-family="Arial">شنطة مناسبة</text>
+        </svg>`,
+      shoe: `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 240">
+          <defs><linearGradient id="bg" x1="0" x2="1"><stop stop-color="#f8fcff"/><stop offset="1" stop-color="#fff7fb"/></linearGradient><linearGradient id="shoe" x1="0" x2="1"><stop stop-color="#d8d0d8"/><stop offset="1" stop-color="#315b7c"/></linearGradient></defs>
+          <rect width="360" height="240" rx="22" fill="url(#bg)"/>
+          <path d="M98 145c42 0 78-14 106-42 9 30 28 43 58 43 12 0 20 9 18 20-2 10-10 16-22 16H105c-18 0-28-13-23-25 3-8 8-12 16-12Z" fill="url(#shoe)"/>
+          <path d="M215 104l22 66" stroke="#735f6b" stroke-width="10" stroke-linecap="round"/>
+          <circle cx="76" cy="58" r="34" fill="#dff3ff"/>
+          <text x="180" y="218" fill="#735f6b" text-anchor="middle" font-size="18" font-family="Arial">حذاء مناسب</text>
+        </svg>`,
+    }[type];
+
+    return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(art)}`;
   }
 
   function renderProducts(strip, products) {
@@ -56,11 +95,7 @@
       .map(
         (product) => `
           <a class="product-card" href="${product.link}" target="_blank" rel="noreferrer">
-            ${
-              product.image
-                ? `<img src="${product.image}" alt="${product.title}" loading="lazy" />`
-                : `<div class="product-fallback-art product-${product.type}" aria-hidden="true"></div>`
-            }
+            <img src="${product.image}" alt="${product.title}" loading="lazy" />
             <span>${productLabel(product.type)}</span>
             <strong>${product.title}</strong>
             <small>${[product.price, product.source].filter(Boolean).join(" · ")}</small>
