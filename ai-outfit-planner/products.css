@@ -39,6 +39,60 @@
   background: #f7f2f5;
 }
 
+.product-fallback-art {
+  height: 132px;
+  position: relative;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.92), transparent 6rem),
+    linear-gradient(135deg, #fff7fb, #f7fbff);
+}
+
+.product-fallback-art::before,
+.product-fallback-art::after {
+  content: "";
+  position: absolute;
+  box-shadow: 0 14px 24px rgba(35, 24, 33, 0.12);
+}
+
+.product-dress::before {
+  width: 58px;
+  height: 88px;
+  right: calc(50% - 29px);
+  top: 24px;
+  border-radius: 28px 28px 10px 10px;
+  background: linear-gradient(160deg, #271522, #d9447f);
+}
+
+.product-bag::before {
+  width: 68px;
+  height: 48px;
+  right: calc(50% - 34px);
+  top: 52px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #fff0c5, #d9447f);
+}
+
+.product-bag::after {
+  width: 38px;
+  height: 22px;
+  right: calc(50% - 19px);
+  top: 35px;
+  border: 5px solid #7c6040;
+  border-bottom: 0;
+  border-radius: 22px 22px 0 0;
+  box-shadow: none;
+}
+
+.product-shoe::before {
+  width: 88px;
+  height: 30px;
+  right: calc(50% - 44px);
+  top: 68px;
+  border-radius: 999px 999px 14px 14px;
+  transform: rotate(-7deg);
+  background: linear-gradient(135deg, #d8d0d8, #315b7c);
+}
+
 .product-card span,
 .product-card strong,
 .product-card small {
