@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ستايلستك الذكي | فهد العساف</title>
-    <link rel="stylesheet" href="./styles.css?v=3" />
+    <link rel="stylesheet" href="./styles.css?v=5" />
   </head>
   <body>
     <main class="app-shell">
@@ -12,32 +12,72 @@
         <div class="hero-media" aria-hidden="true">
           <div class="tablet">
             <span>ستايلستك الذكي</span>
-            <strong>3 لوكات + روابط تسوق</strong>
+            <strong>3 لوكات جاهزة</strong>
             <small>@Alassafme</small>
           </div>
         </div>
         <div class="hero-copy">
           <p class="eyebrow">تجربة مجانية</p>
           <h1>ستايلست ذكي يطلع لك لوك كامل حسب مناسبتك</h1>
-          <p>اكتبي المناسبة والمدينة والستايل والقطع اللي عندك، وخذي 3 تنسيقات جاهزة مع الحذاء والشنطة والمكياج وروابط بحث من Ounass وBloomingdale's وHarrods.</p>
+          <p>
+            اكتبي المناسبة والمدينة والستايل والقطع اللي عندك، وخذي 3 تنسيقات جاهزة مع
+            الشنطة والحذاء والمكياج والإكسسوارات وروابط بحث من متاجر فخمة.
+          </p>
         </div>
       </section>
 
       <section class="workspace" aria-label="مولد الستايلات">
         <form id="plannerForm" class="panel">
-          <div class="field"><label for="occasion">المناسبة</label><input id="occasion" name="occasion" value="زواج" placeholder="مثال: زواج، سفر، جامعة" /></div>
-          <div class="field"><label for="city">المدينة</label><input id="city" name="city" value="الرياض" placeholder="مثال: الرياض، جدة، دبي" /></div>
-          <div class="field"><label for="style">الستايل المفضل</label><select id="style" name="style"><option value="soft">ناعم وفخم</option><option value="practical">عملي ومرتب</option><option value="bold">جريء وأنيق</option><option value="modest">محتشم وراقي</option></select></div>
-          <div class="field"><label for="budget">الميزانية</label><select id="budget" name="budget"><option value="low">اقتصادية</option><option value="medium" selected>متوسطة</option><option value="high">فخمة</option></select></div>
-          <div class="field field-wide"><label for="items">القطع اللي عندك</label><textarea id="items" name="items" rows="3" placeholder="مثال: فستان أسود، عباية بيج، حذاء فضي، شنطة صغيرة">فستان أسود، حذاء فضي، شنطة صغيرة</textarea></div>
+          <div class="field">
+            <label for="occasion">المناسبة</label>
+            <input id="occasion" name="occasion" value="زواج" placeholder="مثال: زواج، سفر، جامعة" />
+          </div>
+
+          <div class="field">
+            <label for="city">المدينة</label>
+            <input id="city" name="city" value="الرياض" placeholder="مثال: الرياض، جدة، دبي" />
+          </div>
+
+          <div class="field">
+            <label for="style">الستايل المفضل</label>
+            <select id="style" name="style">
+              <option value="soft">ناعم وفخم</option>
+              <option value="practical">عملي ومرتب</option>
+              <option value="bold">جريء وأنيق</option>
+              <option value="modest">محتشم وراقي</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="budget">الميزانية</label>
+            <select id="budget" name="budget">
+              <option value="low">اقتصادية</option>
+              <option value="medium" selected>متوسطة</option>
+              <option value="high">فخمة</option>
+            </select>
+          </div>
+
+          <div class="field field-wide">
+            <label for="items">القطع اللي عندك</label>
+            <textarea id="items" name="items" rows="3" placeholder="مثال: فستان أسود، عباية بيج، حذاء فضي، شنطة صغيرة">فستان أسود، حذاء فضي، شنطة صغيرة</textarea>
+          </div>
+
           <button type="submit">طلعي التنسيقات</button>
         </form>
+
         <section class="results" aria-live="polite">
-          <div class="result-header"><div><p class="eyebrow">النتيجة</p><h2>اقتراحات جاهزة للتجربة</h2></div><button id="copyAll" type="button">نسخ النتيجة</button></div>
+          <div class="result-header">
+            <div>
+              <p class="eyebrow">النتيجة</p>
+              <h2>اقتراحات جاهزة للتجربة</h2>
+            </div>
+            <button id="copyAll" type="button">نسخ النتيجة</button>
+          </div>
           <div id="outfits" class="outfit-grid"></div>
         </section>
       </section>
     </main>
-    <script src="./script.js?v=3"></script>
+
+    <script src="./script.js?v=5"></script>
   </body>
 </html>
