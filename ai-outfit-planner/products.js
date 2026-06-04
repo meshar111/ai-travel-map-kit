@@ -3,6 +3,33 @@
   const keyStorageName = "serpapi_demo_key";
   const bundledSerpApiKey = "e8a3ef578fbc1e06a76cde01799a487d2ebb21cdda7bc94ffcebb519c461fc4b";
 
+  const catalog = [
+    {
+      type: "dress",
+      title: "Ethereal Elegance Luxe Draped Evening Gown",
+      price: "199.00 SAR",
+      source: "Montania Shop",
+      image:
+        "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQWMDyge0IKbpyBNpJ6C8kzdnxTYVSxmQlg3vjJSJx6WzL2tGgIhEMpobD5AMD_c85Q5ZJaf4isZTFxHhkiHq67lIw2BlM2s5cqexil9lnlmmAcmneqosd7Eg",
+    },
+    {
+      type: "bag",
+      title: "Tyler Ellis Luxury Black Wedding Clutch Bag",
+      price: "7698.30 SAR",
+      source: "Tyler Ellis",
+      image:
+        "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSbFJJzQ69m2iMg_vABAoBhhHeAH0DRmYSDf3lR5JcS4GTb7kFtr7O2h7pCVp8Qq3KKJ7Pd1noDQGDmuK0UiK7h3Uj0PbQJ2gg2WtsXHN8lRqrUjTGDFHbj5qg",
+    },
+    {
+      type: "shoe",
+      title: "Monaco Suede 10 cm Stiletto Women's Heeled Shoes",
+      price: "1239.98 SAR",
+      source: "Jabotter",
+      image:
+        "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQ560JEPfjff9U_6fsOPK5mZZk0cldGUEFe1dPe63-484dLnuHcMvLsj7V9U96KvqokkTUR9n90HwmiZzTid9XV32ftFxqI_hf1QQUYJX5oTc7ew6d8JYyH1A",
+    },
+  ];
+
   function getSerpApiKey() {
     const params = new URLSearchParams(window.location.search);
     const keyFromUrl = params.get("serpapi_key");
@@ -38,6 +65,20 @@
     );
     if (!ounassLink) return "";
     return new URL(ounassLink.href).searchParams.get("q") || "";
+  }
+
+  function catalogProducts(card) {
+    const links = [...card.querySelectorAll(".retail-links a")];
+    const linkByType = {
+      dress: links.find((link) => link.textContent.includes("Ounass"))?.href,
+      bag: links.find((link) => link.textContent.includes("Bloomingdale"))?.href,
+      shoe: links.find((link) => link.textContent.includes("Harrods"))?.href,
+    };
+
+    return catalog.map((product) => ({
+      ...product,
+      link: linkByType[product.type] || links[0]?.href || "#",
+    }));
   }
 
   function searchPlans(query) {
@@ -123,58 +164,6 @@
     };
   }
 
-  function fallbackProducts(card) {
-    const links = [...card.querySelectorAll(".retail-links a")];
-    const ounass = links.find((link) => link.textContent.includes("Ounass"))?.href || "#";
-    const bloomingdales = links.find((link) => link.textContent.includes("Bloomingdale"))?.href || ounass;
-    const harrods = links.find((link) => link.textContent.includes("Harrods"))?.href || ounass;
-
-    return [
-      { type: "dress", title: "اختيارات فساتين مشابهة", source: "Ounass", link: ounass, image: fallbackImage("dress") },
-      { type: "bag", title: "شنط تناسب اللوك", source: "Bloomingdale's", link: bloomingdales, image: fallbackImage("bag") },
-      { type: "shoe", title: "أحذية وإكسسوارات", source: "Harrods", link: harrods, image: fallbackImage("shoe") },
-    ];
-  }
-
-  function fallbackImage(type) {
-    const art = {
-      dress: `
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 240">
-          <defs>
-            <linearGradient id="bg" x1="0" x2="1"><stop stop-color="#fff7fb"/><stop offset="1" stop-color="#eef9ff"/></linearGradient>
-            <linearGradient id="dress" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#251321"/><stop offset="1" stop-color="#d9447f"/></linearGradient>
-          </defs>
-          <rect width="360" height="240" rx="22" fill="url(#bg)"/>
-          <circle cx="70" cy="46" r="54" fill="#ffe0ed"/>
-          <path d="M167 52h26l17 43 38 88c3 8-3 17-12 17H124c-9 0-15-9-12-17l38-88 17-43Z" fill="url(#dress)"/>
-          <path d="M160 52c5 17 13 27 20 27s15-10 20-27" fill="#fff7fb" opacity=".95"/>
-          <path d="M151 96h58" stroke="#f5c4d8" stroke-width="6" stroke-linecap="round"/>
-          <circle cx="261" cy="82" r="18" fill="#c9a24b"/>
-          <text x="180" y="224" fill="#735f6b" text-anchor="middle" font-size="18" font-family="Arial">صورة الفستان</text>
-        </svg>`,
-      bag: `
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 240">
-          <defs><linearGradient id="bg" x1="0" x2="1"><stop stop-color="#fff8ed"/><stop offset="1" stop-color="#f8fcff"/></linearGradient><linearGradient id="bag" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#fff0c5"/><stop offset="1" stop-color="#d9447f"/></linearGradient></defs>
-          <rect width="360" height="240" rx="22" fill="url(#bg)"/>
-          <rect x="120" y="92" width="120" height="82" rx="20" fill="url(#bag)"/>
-          <path d="M148 96c0-30 64-30 64 0" fill="none" stroke="#7c6040" stroke-width="12" stroke-linecap="round"/>
-          <circle cx="88" cy="60" r="38" fill="#ffd5e6"/>
-          <text x="180" y="218" fill="#735f6b" text-anchor="middle" font-size="18" font-family="Arial">شنطة مناسبة</text>
-        </svg>`,
-      shoe: `
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 240">
-          <defs><linearGradient id="bg" x1="0" x2="1"><stop stop-color="#f8fcff"/><stop offset="1" stop-color="#fff7fb"/></linearGradient><linearGradient id="shoe" x1="0" x2="1"><stop stop-color="#d8d0d8"/><stop offset="1" stop-color="#315b7c"/></linearGradient></defs>
-          <rect width="360" height="240" rx="22" fill="url(#bg)"/>
-          <path d="M98 145c42 0 78-14 106-42 9 30 28 43 58 43 12 0 20 9 18 20-2 10-10 16-22 16H105c-18 0-28-13-23-25 3-8 8-12 16-12Z" fill="url(#shoe)"/>
-          <path d="M215 104l22 66" stroke="#735f6b" stroke-width="10" stroke-linecap="round"/>
-          <circle cx="76" cy="58" r="34" fill="#dff3ff"/>
-          <text x="180" y="218" fill="#735f6b" text-anchor="middle" font-size="18" font-family="Arial">حذاء مناسب</text>
-        </svg>`,
-    }[type];
-
-    return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(art)}`;
-  }
-
   function renderProducts(strip, products) {
     if (!products.length) {
       strip.hidden = true;
@@ -215,7 +204,7 @@
     strip.innerHTML = "<span>جاري جلب صور المنتجات...</span>";
 
     const products = await fetchProducts(query);
-    renderProducts(strip, products.length ? products : fallbackProducts(card));
+    renderProducts(strip, products.length ? products : catalogProducts(card));
   }
 
   function hydrate() {
