@@ -1,5 +1,18 @@
 (function () {
   const cache = new Map();
+  const keyStorageName = "serpapi_demo_key";
+  const bundledSerpApiKey = "e8a3ef578fbc1e06a76cde01799a487d2ebb21cdda7bc94ffcebb519c461fc4b";
+
+  function getSerpApiKey() {
+    const params = new URLSearchParams(window.location.search);
+    const keyFromUrl = params.get("serpapi_key");
+    if (keyFromUrl) {
+      localStorage.setItem(keyStorageName, keyFromUrl.trim());
+      return keyFromUrl.trim();
+    }
+
+    return (localStorage.getItem(keyStorageName) || bundledSerpApiKey).trim();
+  }
 
   function productLabel(type) {
     return {
@@ -10,6 +23,15 @@
     }[type] || "القطعة";
   }
 
+  function escapeHtml(value) {
+    return String(value || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
   function extractQuery(card) {
     const ounassLink = [...card.querySelectorAll(".retail-links a")].find((link) =>
       link.textContent.includes("Ounass"),
@@ -18,17 +40,78 @@
     return new URL(ounassLink.href).searchParams.get("q") || "";
   }
 
+  function searchPlans(query) {
+    const cleanQuery = query.replace(/\s+/g, " ").trim();
+    return [
+      { type: "dress", q: cleanQuery },
+      { type: "bag", q: `${cleanQuery} luxury handbag` },
+      { type: "shoe", q: `${cleanQuery} heels shoes` },
+    ];
+  }
+
   async function fetchProducts(query) {
     if (!query) return [];
-    if (cache.has(query)) return cache.get(query);
 
-    const request = fetch(`/api/products?q=${encodeURIComponent(query)}`)
+    const cacheKey = `${query}:${Boolean(getSerpApiKey())}`;
+    if (cache.has(cacheKey)) return cache.get(cacheKey);
+
+    const request = fetchLocalProducts(query).then(async (localProducts) => {
+      if (localProducts.length) return localProducts;
+      return fetchSerpApiProducts(query);
+    });
+
+    cache.set(cacheKey, request);
+    return request;
+  }
+
+  async function fetchLocalProducts(query) {
+    return fetch(`/api/products?q=${encodeURIComponent(query)}`)
       .then((response) => (response.ok ? response.json() : { products: [] }))
       .then((data) => (Array.isArray(data.products) ? data.products : []))
       .catch(() => []);
+  }
 
-    cache.set(query, request);
-    return request;
+  async function fetchSerpApiProducts(query) {
+    const apiKey = getSerpApiKey();
+    if (!apiKey) return [];
+
+    const results = await Promise.all(
+      searchPlans(query).map(async (plan) => {
+        const url = new URL("https://serpapi.com/search.json");
+        url.searchParams.set("engine", "google_shopping");
+        url.searchParams.set("q", plan.q);
+        url.searchParams.set("gl", "sa");
+        url.searchParams.set("hl", "ar");
+        url.searchParams.set("api_key", apiKey);
+
+        return fetch(url)
+          .then((response) => (response.ok ? response.json() : null))
+          .then((data) => normalizeSerpApiProduct(data, plan.type))
+          .catch(() => null);
+      }),
+    );
+
+    return results.filter(Boolean);
+  }
+
+  function normalizeSerpApiProduct(data, type) {
+    const items = [
+      ...(data?.shopping_results || []),
+      ...(data?.inline_shopping_results || []),
+      ...(data?.categorized_shopping_results || []).flatMap((group) => group.shopping_results || []),
+    ];
+
+    const item = items.find((candidate) => candidate.thumbnail || candidate.serpapi_thumbnail);
+    if (!item) return null;
+
+    return {
+      type,
+      title: item.title || "اختيار مناسب للوك",
+      price: item.price || "",
+      source: item.source || item.seller || "Google Shopping",
+      link: item.link || item.product_link || item.serpapi_link || "#",
+      image: item.thumbnail || item.serpapi_thumbnail,
+    };
   }
 
   function fallbackProducts(card) {
@@ -94,11 +177,11 @@
       .slice(0, 3)
       .map(
         (product) => `
-          <a class="product-card" href="${product.link}" target="_blank" rel="noreferrer">
-            <img src="${product.image}" alt="${product.title}" loading="lazy" />
+          <a class="product-card" href="${escapeHtml(product.link)}" target="_blank" rel="noreferrer">
+            <img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.title)}" loading="lazy" referrerpolicy="no-referrer" />
             <span>${productLabel(product.type)}</span>
-            <strong>${product.title}</strong>
-            <small>${[product.price, product.source].filter(Boolean).join(" · ")}</small>
+            <strong>${escapeHtml(product.title)}</strong>
+            <small>${escapeHtml([product.price, product.source].filter(Boolean).join(" · "))}</small>
           </a>
         `,
       )
@@ -116,9 +199,11 @@
     if (!strip) {
       strip = document.createElement("div");
       strip.className = "product-strip";
-      strip.innerHTML = "<span>جاري جلب صور منتجات حقيقية...</span>";
       card.querySelector(".style-visual")?.after(strip);
     }
+
+    strip.hidden = false;
+    strip.innerHTML = "<span>جاري جلب صور المنتجات...</span>";
 
     const products = await fetchProducts(query);
     renderProducts(strip, products.length ? products : fallbackProducts(card));
@@ -128,9 +213,13 @@
     document.querySelectorAll(".outfit-card").forEach(hydrateCard);
   }
 
-  new MutationObserver(hydrate).observe(document.querySelector("#outfits"), {
-    childList: true,
-    subtree: true,
-  });
+  const outfits = document.querySelector("#outfits");
+  if (outfits) {
+    new MutationObserver(hydrate).observe(outfits, {
+      childList: true,
+      subtree: true,
+    });
+  }
+
   hydrate();
 })();
