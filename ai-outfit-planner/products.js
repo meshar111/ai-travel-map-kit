@@ -84,14 +84,23 @@
         url.searchParams.set("hl", "ar");
         url.searchParams.set("api_key", apiKey);
 
-        return fetch(url)
-          .then((response) => (response.ok ? response.json() : null))
+        return fetchJsonWithCorsFallback(url)
           .then((data) => normalizeSerpApiProduct(data, plan.type))
           .catch(() => null);
       }),
     );
 
     return results.filter(Boolean);
+  }
+
+  async function fetchJsonWithCorsFallback(url) {
+    const direct = await fetch(url).catch(() => null);
+    if (direct?.ok) return direct.json();
+
+    const proxiedUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url.toString())}`;
+    const proxied = await fetch(proxiedUrl).catch(() => null);
+    if (!proxied?.ok) return null;
+    return proxied.json();
   }
 
   function normalizeSerpApiProduct(data, type) {
