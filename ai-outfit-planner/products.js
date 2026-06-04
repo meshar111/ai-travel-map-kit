@@ -31,6 +31,19 @@
     return request;
   }
 
+  function fallbackProducts(card) {
+    const links = [...card.querySelectorAll(".retail-links a")];
+    const ounass = links.find((link) => link.textContent.includes("Ounass"))?.href || "#";
+    const bloomingdales = links.find((link) => link.textContent.includes("Bloomingdale"))?.href || ounass;
+    const harrods = links.find((link) => link.textContent.includes("Harrods"))?.href || ounass;
+
+    return [
+      { type: "dress", title: "اختيارات فساتين مشابهة", source: "Ounass", link: ounass },
+      { type: "bag", title: "شنط تناسب اللوك", source: "Bloomingdale's", link: bloomingdales },
+      { type: "shoe", title: "أحذية وإكسسوارات", source: "Harrods", link: harrods },
+    ];
+  }
+
   function renderProducts(strip, products) {
     if (!products.length) {
       strip.hidden = true;
@@ -43,7 +56,11 @@
       .map(
         (product) => `
           <a class="product-card" href="${product.link}" target="_blank" rel="noreferrer">
-            <img src="${product.image}" alt="${product.title}" loading="lazy" />
+            ${
+              product.image
+                ? `<img src="${product.image}" alt="${product.title}" loading="lazy" />`
+                : `<div class="product-fallback-art product-${product.type}" aria-hidden="true"></div>`
+            }
             <span>${productLabel(product.type)}</span>
             <strong>${product.title}</strong>
             <small>${[product.price, product.source].filter(Boolean).join(" · ")}</small>
@@ -68,7 +85,8 @@
       card.querySelector(".style-visual")?.after(strip);
     }
 
-    renderProducts(strip, await fetchProducts(query));
+    const products = await fetchProducts(query);
+    renderProducts(strip, products.length ? products : fallbackProducts(card));
   }
 
   function hydrate() {
