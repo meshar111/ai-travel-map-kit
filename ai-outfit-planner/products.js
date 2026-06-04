@@ -115,6 +115,7 @@
   async function fetchSerpApiProducts(query) {
     const apiKey = getSerpApiKey();
     if (!apiKey) return [];
+    if (location.hostname.includes("github.io")) return [];
 
     const results = await Promise.all(
       searchPlans(query).map(async (plan) => {
