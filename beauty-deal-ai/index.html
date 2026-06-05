@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Beauty Deal AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#top" aria-label="Beauty Deal AI">
+          <span class="brand-mark"></span>
+          <span>Beauty Deal AI</span>
+        </a>
+        <nav class="nav">
+          <a href="#demo" data-i18n="nav.demo">التجربة</a>
+          <a href="#alerts" data-i18n="nav.alerts">تنبيهات السعر</a>
+          <a href="#pricing" data-i18n="nav.pricing">الباقات</a>
+        </nav>
+        <div class="actions">
+          <div class="lang-toggle" aria-label="Language">
+            <button class="active" data-lang="ar">العربية</button>
+            <button data-lang="en">EN</button>
+          </div>
+          <a class="ghost-btn" href="#demo" data-i18n="nav.cta">جرّب الآن</a>
+        </div>
+      </header>
+
+      <main id="top">
+        <section class="hero">
+          <div class="hero-copy">
+            <p class="eyebrow" data-i18n="hero.eyebrow">مساعد شراء ذكي للميك أب</p>
+            <h1 data-i18n="hero.title">وفّري قبل كل طلبية ميك أب.</h1>
+            <p class="hero-text" data-i18n="hero.text">اكتبي اسم المنتج أو ارفعي صورته، وخلي الذكاء الاصطناعي يقارن المتاجر، يراقب هبوط السعر، ويقترح بدائل أرخص بنسبة تطابق واضحة.</p>
+            <div class="hero-cta">
+              <a class="primary-btn" href="#demo" data-i18n="hero.primary">ابدئي 10 محاولات مجانية</a>
+              <a class="secondary-btn" href="#pricing" data-i18n="hero.secondary">شوفي الباقات</a>
+            </div>
+            <div class="metrics">
+              <div><strong>10</strong><span data-i18n="hero.metric1">محاولات مجانية</span></div>
+              <div><strong>35%</strong><span data-i18n="hero.metric2">تنبيه هبوط سعر</span></div>
+              <div><strong>86%</strong><span data-i18n="hero.metric3">تطابق البديل</span></div>
+            </div>
+          </div>
+          <div class="hero-visual" aria-label="Beauty Deal AI product preview">
+            <div class="vanity-scene">
+              <div class="product-palette"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+              <div class="lipstick"></div>
+              <div class="phone">
+                <div class="phone-search" data-i18n="phone.search">صوري المنتج أو اكتبي اسمه</div>
+                <div class="phone-card"><small data-i18n="phone.cheapest">أرخص سعر</small><b>89 SAR</b><span>Nice One</span></div>
+                <div class="phone-card alt"><small data-i18n="phone.alt">بديل أرخص</small><b>49 SAR</b><span class="match">86%</span></div>
+                <div class="phone-cta" data-i18n="phone.free">10 محاولات مجانية</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="feature-strip" aria-label="features">
+          <div data-i18n="strip.one">مقارنة متاجر</div>
+          <div data-i18n="strip.two">بدائل أرخص</div>
+          <div data-i18n="strip.three">تنبيهات Pro</div>
+          <div data-i18n="strip.four">اشتراكات جاهزة</div>
+        </section>
+
+        <section class="demo-section" id="demo">
+          <div class="section-heading">
+            <p data-i18n="demo.eyebrow">تجربة المنتج</p>
+            <h2 data-i18n="demo.title">اكتبي منتج وشوفي النتيجة فورًا</h2>
+          </div>
+          <div class="workspace">
+            <aside class="sidebar">
+              <div class="sidebar-brand">Beauty Deal AI</div>
+              <button class="side-item active" data-i18n="side.search">البحث</button>
+              <button class="side-item" data-i18n="side.saved">المحفوظات</button>
+              <button class="side-item" data-i18n="side.alerts">تنبيهات السعر</button>
+              <button class="side-item" data-i18n="side.billing">الفواتير</button>
+            </aside>
+            <div class="dashboard">
+              <div class="search-card">
+                <div>
+                  <label for="productInput" data-i18n="demo.label">اسم المنتج</label>
+                  <div class="input-row">
+                    <input id="productInput" type="text" value="Dior Lip Glow وردي" />
+                    <button id="uploadBtn" type="button" data-i18n="demo.upload">رفع صورة</button>
+                  </div>
+                </div>
+                <div class="control-row">
+                  <button id="searchBtn" class="primary-btn" type="button" data-i18n="demo.search">قارن الأسعار</button>
+                  <span class="attempts"><b id="attemptCount">7</b> / 10 <span data-i18n="demo.attempts">محاولات مجانية</span></span>
+                </div>
+              </div>
+
+              <div class="results-grid">
+                <article class="deal-card best"><span data-i18n="results.best">أفضل سعر</span><h3 id="bestPrice">89 SAR</h3><p id="bestStore">Nice One</p><button type="button" data-i18n="results.open">افتح العرض</button></article>
+                <article class="deal-card"><span data-i18n="results.stores">المتاجر</span><ul id="storesList"></ul></article>
+                <article class="deal-card alt-card"><span data-i18n="results.alt">بديل أرخص</span><h3 id="altName">Maybelline Lifter Gloss</h3><p data-i18n="results.altText">قريب في اللون واللمعة والاستخدام اليومي.</p><div class="score"><b id="matchScore">86%</b><span data-i18n="results.match">نسبة التطابق</span></div></article>
+                <article class="deal-card alert-card" id="alerts"><span data-i18n="results.pro">Pro</span><h3 data-i18n="results.alertTitle">راقبي السعر</h3><p data-i18n="results.alertText">احفظي المنتج ويوصلك تنبيه إذا نزل سعره.</p><div class="notification" data-i18n="results.notification">الحقّي! المنتج نزل سعره 35 بالمية</div></article>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="pricing" id="pricing">
+          <div class="section-heading centered"><p data-i18n="pricing.eyebrow">نموذج دخل واضح</p><h2 data-i18n="pricing.title">جرّبي مجانًا، واشتركي لما يصير مفيد.</h2></div>
+          <div class="plans">
+            <article class="plan"><h3>Glow</h3><strong>19 <span data-i18n="pricing.currency">ريال</span></strong><p data-i18n="pricing.glow">للاستخدام الخفيف</p><ul><li data-i18n="pricing.glow1">10 عمليات بحث شهريًا</li><li data-i18n="pricing.glow2">بدائل أساسية</li><li data-i18n="pricing.glow3">مقارنة المتاجر</li></ul><button data-i18n="pricing.choose">اختاري الباقة</button></article>
+            <article class="plan highlighted"><div class="badge" data-i18n="pricing.popular">الأكثر مناسبة</div><h3>Pro</h3><strong>39 <span data-i18n="pricing.currency">ريال</span></strong><p data-i18n="pricing.pro">الأفضل للمشتريات المتكررة</p><ul><li data-i18n="pricing.pro1">بحث غير محدود</li><li data-i18n="pricing.pro2">تنبيهات هبوط السعر</li><li data-i18n="pricing.pro3">منتجات محفوظة</li></ul><button data-i18n="pricing.startPro">ابدئي Pro</button></article>
+            <article class="plan"><h3>Studio</h3><strong>99 <span data-i18n="pricing.currency">ريال</span></strong><p data-i18n="pricing.studio">لصانعات المحتوى والمتاجر</p><ul><li data-i18n="pricing.studio1">قوائم حملات</li><li data-i18n="pricing.studio2">تقارير ترند</li><li data-i18n="pricing.studio3">متابعة منتجات بالجملة</li></ul><button data-i18n="pricing.choose">اختاري الباقة</button></article>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
